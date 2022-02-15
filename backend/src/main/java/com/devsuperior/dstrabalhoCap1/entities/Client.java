@@ -23,7 +23,7 @@ public class Client implements Serializable {
 	private String cpf;
 	private Double income;
 	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") 
 	private Instant birtDate;
 	private int children;
 	
