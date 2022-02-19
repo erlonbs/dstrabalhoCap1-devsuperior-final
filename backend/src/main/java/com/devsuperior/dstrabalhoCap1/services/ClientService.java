@@ -1,6 +1,7 @@
 package com.devsuperior.dstrabalhoCap1.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dstrabalhoCap1.dto.ClientDTO;
 import com.devsuperior.dstrabalhoCap1.entities.Client;
 import com.devsuperior.dstrabalhoCap1.repositories.ClientRepository;
+import com.devsuperior.dstrabalhoCap1.services.exceptions.EntityNotFoundException;
 
 @Service
 public class ClientService {
@@ -24,5 +26,11 @@ public class ClientService {
 
 		return list.stream().map(x -> new ClientDTO(x)).collect(Collectors.toList());
 
+	}
+@Transactional(readOnly = true)
+	public ClientDTO findById(Long id) {
+	 Optional<Client> obj=repository.findById(id);
+	 Client entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		return new ClientDTO(entity);
 	}
 }
