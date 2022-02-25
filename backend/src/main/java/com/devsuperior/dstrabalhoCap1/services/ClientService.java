@@ -5,14 +5,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
+import javax.swing.Spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.dstrabalhoCap1.dto.ClientDTO;
 import com.devsuperior.dstrabalhoCap1.entities.Client;
 import com.devsuperior.dstrabalhoCap1.repositories.ClientRepository;
+import com.devsuperior.dstrabalhoCap1.services.exceptions.DatabaseException;
 import com.devsuperior.dstrabalhoCap1.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -65,6 +69,18 @@ public class ClientService {
 
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
+		}
+	}
+
+	public void delete(Long id) {
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
+
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
 		}
 	}
 
